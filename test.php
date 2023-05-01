@@ -9,7 +9,8 @@ if (isset($_POST['url'])){
 		$extracted_link = unserialize($_POST['data']);
 		foreach ($extracted_link as $link){
 			$file_name = basename($link);
-			$file_name = "path/" . $file_name;
+			$file_path = "download/";
+			$file_name = $file_path . $file_name;
 			if (file_put_contents($file_name, file_get_contents($link))){
 				echo "File downloaded successfully";
 			}
