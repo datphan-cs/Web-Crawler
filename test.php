@@ -1,32 +1,57 @@
 <?php 
+	
 	///////////////// Array to store all links to data /////////////////
 	$extracted_link = [];
 	///////////////// Crawl data from specified URL /////////////////
-
 	if (isset($_POST['url'])){
 		if (isset($_POST['down_all'])){
 			$extracted_link = unserialize($_POST['data']);
-			foreach ($extracted_link as $link){
-				$file_name = basename($link);
-				$file_path = "download/";
-				$file_name = $file_path . $file_name;
-				if (file_put_contents($file_name, file_get_contents($link))){
-					echo "File downloaded successfully";
-				}
-				else{
-					echo "File downloading failed.";
-				}
+
+			$zip = new ZipArchive();
+
+			# create a temp file & open it
+			$tmp_file = tempnam('.', '');
+			$zip->open($tmp_file, ZipArchive::CREATE);
+
+			foreach ($extracted_link as $file) {
+				# download file
+				$download_file = file_get_contents($file);
+				$zip->addFromString(basename($file), $download_file);
 			}
+
+			# close zip
+			$zip->close();
+
+			# send the file to the browser as a download
+			header('Content-disposition: attachment; filename="my file.zip"');
+			header('Content-type: application/zip');
+			readfile($tmp_file);
+			unlink($tmp_file);
+			// foreach ($extracted_link as $link){
+			// 	$file_name = basename($link);
+			// 	$file_path = "download/";
+			// 	$file_name = $file_path . $file_name;
+			// 	if (file_put_contents($file_name, file_get_contents($link))){
+			// 		echo "File downloaded successfully";
+			// 	}
+			// 	else{
+			// 		echo "File downloading failed.";
+			// 	}
+			// }
 		}
 		else{
 			require 'vendor/autoload.php';
 			require 'feature.php';
 
-			$http_client = new \GuzzleHttp\Client();
-
 			$url = $_POST['url'];
 			$option = $_POST['radio'];
-			crawl_toscrape($url, $option, $extracted_link);
+			if (strpos($url,"books.toscrape.com") !== False){
+				crawl_toscrape($url, $option, $extracted_link);			
+			}
+			else if (strpos($url,"pdfdrive") !== False){
+				crawl_pdfdrive($url, $option, $extracted_link);
+			}
+
 
 		
 	}
@@ -60,16 +85,17 @@
 </form>
 
 <?php	
+
 	if (empty($extracted_link) === True && isset($_POST['url'])){
 		echo "THIS WEBSITE MAY NOT HAVE YOUR DESIRED FILE TYPE";
 	}
 	else{
-		for ($i = 20; $i < 25; $i++){
-			echo "<a href = $extracted_link[$i]>$extracted_link[$i] </a> <br>";
-		}
-		// foreach ($extracted_link as $link){
-		// 	echo "<a href = $link>$link </a> <br>";
+		// for ($i = 20; $i < 25; $i++){
+		// 	echo "<a href = $extracted_link[$i]>$extracted_link[$i] </a> <br>";
 		// }
+		foreach ($extracted_link as $link){
+			echo "<a href = $link>$link </a> <br>";
+		}
 	}
 
 ?>
