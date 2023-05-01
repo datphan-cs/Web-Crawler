@@ -16,7 +16,7 @@ git clone https://github.com/datphan-cs/PHP-Crawler
 - Then enter below command to setup the environment
 ```
 cd web_crawler
-compose.phar install
+composer install
 ```
 
 ## EXECUTE THE CODE
