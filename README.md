@@ -6,7 +6,7 @@
 - [ ] XAMPP
 
 ## CONFIG ENVIRONMENT
-- First, clone this repository
+- First, clone this repository into htdocs
 ```
 git clone https://github.com/datphan-cs/PHP-Crawler
 ```
