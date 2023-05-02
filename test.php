@@ -13,8 +13,13 @@
 			$tmp_file = tempnam('.', '');
 			$zip->open($tmp_file, ZipArchive::CREATE);
 
+			$i = 0;
 			foreach ($extracted_link as $file) {
 				# download file
+				if ($i >=10){
+					break;
+				}
+				$i++;
 				$download_file = file_get_contents($file);
 				$zip->addFromString(basename($file), $download_file);
 			}
@@ -51,6 +56,9 @@
 			else if (strpos($url,"pdfdrive") !== False){
 				crawl_pdfdrive($url, $option, $extracted_link);
 			}
+			else if (strpos($url, "catalog.data.gov") !== False){
+				crawl_catalog($url, $option, $extracted_link);
+			}
 
 
 		
@@ -64,18 +72,28 @@
   <fieldset>
     <div>
       <input type="radio" id="img" name="radio" value = "img" checked>
-      <label for="img">Image File (.png, .jpg, .gif)</label>
+      <label for="img">Image File (.png, .jpg, .gif) </label>
     </div>
 
     <div>
-      <input type="radio" id="pdf" name="radio" value = "pdf">
-      <label for="pdf">PDF</label>
+      <input type="radio" id="doc" name="radio" value = "doc">
+      <label for="pdf">Document (.pdf, .doc, .docx) </label>
+    </div>
+
+    <div>
+      <input type="radio" id="csv" name="radio" value = "csv">
+      <label for="csv">Worksheet (.csv, .xlsx) </label>
     </div>
 
     <div>
       <input type="radio" id="zip" name="radio" value = "zip">
       <label for="zip">Compressed File (.tar.gz, .zip, .rar, .7z) </label>
     </div>
+    <div>
+      <input type="radio" id="sound" name="radio" value = "sound">
+      <label for="sound">Music File (.mp3, .wav) </label>
+    </div>
+
 	<br>
 	</fieldset>
   <br/>
