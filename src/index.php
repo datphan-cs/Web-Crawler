@@ -124,7 +124,7 @@ if (isset($_POST['url'])) {
 	<?php } else { ?>
 		<?php foreach ($extracted_link as $link) { ?>
 			<div class="border mb-1 p-3 rounded">
-				URL: <a href=$link><?= $link ?></a>
+				URL: <a href=<?= $link ?>><?= $link ?></a>
 			</div>
 		<?php } ?>
 	<?php } ?>
