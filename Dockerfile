@@ -16,7 +16,7 @@ WORKDIR /var/www/html
 COPY composer.lock composer.json ./
 
 # Install dependencies
-RUN composer instal
+RUN composer install
 
 # Copy the source directory
 COPY src/ ./src
