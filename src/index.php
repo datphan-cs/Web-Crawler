@@ -77,7 +77,7 @@ if (isset($_POST['url'])) {
 	<title>Document</title>
 </head>
 
-<body class="container-fluid">
+<body class="container-fluid h-100">
 	<h1>Simple web crawler tool</h1>
 	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" name="form" method="POST" class="mb-4">
 		<div class="mb-3">
@@ -115,18 +115,20 @@ if (isset($_POST['url'])) {
 		<div class="col">
 			<input type="submit" name="my_form_submit_button" value="CRAWL" class="btn btn-primary" />
 			<input type='hidden' name='data' value="<?php echo htmlentities(serialize($extracted_link)); ?>" />
-			<input type="submit" id="down_btn" name="down_all" value="DOWNLOAD ALL" class="btn btn-secondary" <?php echo empty($extracted_link) === True && isset($_POST['ur']) ? "" : "disabled" ?> />
+			<input type="submit" id="down_btn" name="down_all" value="DOWNLOAD ALL" class="btn btn-secondary" />
 		</div>
 	</form>
 	<h2>Result</h2>
 	<?php if (empty($extracted_link) === True && isset($_POST['url'])) { ?>
 		<p>"THIS WEBSITE MAY NOT HAVE YOUR DESIRED FILE TYPE";</p>
 	<?php } else { ?>
-		<?php foreach ($extracted_link as $link) { ?>
-			<div class="border mb-1 p-3 rounded">
-				URL: <a href=<?= $link ?>><?= $link ?></a>
-			</div>
-		<?php } ?>
+		<div style="height: 30rem; overflow-y: scroll;" class="border p-2 rounded">
+			<?php foreach ($extracted_link as $link) { ?>
+				<div class="border mb-1 p-3 rounded">
+					URL: <a href=<?= $link ?>><?= $link ?></a>
+				</div>
+			<?php } ?>
+		</div>
 	<?php } ?>
 
 
